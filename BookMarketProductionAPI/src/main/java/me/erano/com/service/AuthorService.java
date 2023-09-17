@@ -7,11 +7,13 @@ import me.erano.com.model.Author;
 
 public interface AuthorService {
 
-	public abstract void createAuthor(Author author);
+	public abstract Author createAuthor(AuthorDto authorDto);
 
 	public abstract void updateAuthor(Long id, Author author) throws Exception;
 
 	public abstract void deleteAuthor(Long id);
+	
+	public abstract AuthorDto getAuthor(Long id);
 
 	public abstract List<AuthorDto> getAllAuthors();
 

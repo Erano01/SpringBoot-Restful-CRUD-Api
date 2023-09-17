@@ -19,6 +19,7 @@ public class AuthorServiceImpl implements AuthorService{
 	
 	private final AuthorRepository authorRepository;
 	
+	
 	@Autowired
 	public AuthorServiceImpl(AuthorRepository authorRepository) {
 		this.authorRepository = authorRepository;
@@ -49,8 +50,22 @@ public class AuthorServiceImpl implements AuthorService{
 	}
 	
 	@Override
-	public void createAuthor(Author author) {
-		authorRepository.saveAndFlush(author);
+	public Author createAuthor(AuthorDto authorDto) {
+		if(!authorRepository.existsById(authorDto.getId())) {
+			Author author = new Author();
+			author.setId(authorDto.getId());
+			author.setName(authorDto.getName());
+			author.setBooks(authorDto.getBooks());
+			try {
+				authorRepository.saveAndFlush(author);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			return author;
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -69,6 +84,17 @@ public class AuthorServiceImpl implements AuthorService{
 	@Override
 	public void deleteAuthor(Long id) {
 		authorRepository.deleteById(id);
+	}
+
+	@Override
+	public AuthorDto getAuthor(Long id) {
+		Author expected = authorRepository.getReferenceById(id);
+		AuthorDto authorDto = new AuthorDto(
+				expected.getId(),
+				expected.getName(),
+				expected.getBooks()
+				);
+		return authorDto;
 	}
 
 	@Override

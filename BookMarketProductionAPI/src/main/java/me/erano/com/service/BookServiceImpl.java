@@ -40,6 +40,20 @@ public class BookServiceImpl implements BookService{
 	public void deleteBook(Long id) {
 		bookRepository.deleteById(id);
 	}
+	
+	
+
+	@Override
+	public BookDto getBook(Long id) {
+		Book expected = bookRepository.getReferenceById(id);
+		BookDto bookDto = new BookDto(
+				expected.getId(),
+				expected.getName(),
+				expected.getAuthor().getId()
+			);
+		
+		return bookDto;
+	}
 
 	@Override
 	public List<BookDto> getAllBooks() {

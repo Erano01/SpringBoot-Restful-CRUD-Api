@@ -12,6 +12,8 @@ public interface BookService {
 	public abstract void updateBook(Long id, Book book);
 
 	public abstract void deleteBook(Long id);
+	
+	public abstract BookDto getBook(Long id);
 
 	public abstract List<BookDto> getAllBooks();
 }
