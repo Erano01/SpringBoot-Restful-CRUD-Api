@@ -2,7 +2,12 @@ package me.erano.com.model;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +25,7 @@ public class Book {
 
 	private String name;
 
-	@JsonIgnore
+	@JsonBackReference //back reference for authors json data.
 	@ManyToOne
 	@JoinColumn(name = "author_id")
 	private Author author;
@@ -28,6 +33,7 @@ public class Book {
 	public Book() {
 
 	}
+
 
 	public Long getId() {
 		return id;

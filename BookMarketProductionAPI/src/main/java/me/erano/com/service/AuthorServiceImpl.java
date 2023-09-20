@@ -7,11 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import me.erano.com.dto.AuthorDto;
 import me.erano.com.model.Author;
 import me.erano.com.model.Book;
 import me.erano.com.repository.AuthorRepository;
-import me.erano.com.repository.BookRepository;
 
 @Service
 public class AuthorServiceImpl implements AuthorService{
@@ -50,19 +48,19 @@ public class AuthorServiceImpl implements AuthorService{
 	}
 	
 	@Override
-	public Author createAuthor(AuthorDto authorDto) {
-		if(!authorRepository.existsById(authorDto.getId())) {
-			Author author = new Author();
-			author.setId(authorDto.getId());
-			author.setName(authorDto.getName());
-			author.setBooks(authorDto.getBooks());
+	public Author createAuthor(Author author) {
+		if(!authorRepository.existsById(author.getId())) {
+			Author newAuthor = new Author();
+			newAuthor.setId(author.getId());
+			newAuthor.setName(author.getName());
+			newAuthor.setBooks(author.getBooks());
 			try {
-				authorRepository.saveAndFlush(author);
+				authorRepository.saveAndFlush(newAuthor);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
 			}
-			return author;
+			return newAuthor;
 		}
 		
 		return null;
@@ -87,25 +85,17 @@ public class AuthorServiceImpl implements AuthorService{
 	}
 
 	@Override
-	public AuthorDto getAuthor(Long id) {
+	public Author getAuthor(Long id) {
 		Author expected = authorRepository.getReferenceById(id);
-		AuthorDto authorDto = new AuthorDto(
-				expected.getId(),
-				expected.getName(),
-				expected.getBooks()
-				);
-		return authorDto;
+		return expected;
+	}
+	public Author getAuthorByName(String name) {
+		Author expected = authorRepository.findAuthorByName(name);
+		return expected;
 	}
 
 	@Override
-	public List<AuthorDto> getAllAuthors() {
-		List<Author> authors = authorRepository.findAll();
-		List<AuthorDto> authorDtos = new ArrayList<>();
-		for(Author author : authors) {
-			AuthorDto authorDto = new AuthorDto(author.getId(),author.getName(),author.getBooks());
-			authorDtos.add(authorDto);
-		}
-		
-		return authorDtos;
+	public List<Author> getAllAuthors() {
+		return authorRepository.findAll();
 	}
 }

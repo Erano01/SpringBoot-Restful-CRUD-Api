@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import me.erano.com.dto.AuthorDto;
-import me.erano.com.dto.BookDto;
 import me.erano.com.model.Author;
+import me.erano.com.model.Book;
 import me.erano.com.service.AuthorService;
 import me.erano.com.service.BookService;
 
@@ -30,32 +29,20 @@ public class ApiController {
 	AuthorService authorService;
 	
 	@GetMapping("/author")
-    public ResponseEntity<List<AuthorDto>> getAllAuthors() {
-        List<AuthorDto> authors = authorService.getAllAuthors();
-        
-        if (authors.isEmpty()) {
-            return ResponseEntity.noContent().build(); // 204 No Content response
-        } else {
-            return ResponseEntity.ok(authors); // 200 OK response with the list of authors
-        }
+    public ResponseEntity<List<Author>> getAllAuthors() {
+        return ResponseEntity.ok(authorService.getAllAuthors());
     }
 	
 	@GetMapping("/book")
-    public ResponseEntity<List<BookDto>> getAllBooks() {
-        List<BookDto> books = bookService.getAllBooks();
-        
-        if (books.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(books);
-        }
+    public ResponseEntity<List<Book>> getAllBooks() {
+        return ResponseEntity.ok(bookService.getAllBooks());
     }
 	
 	// example : (GET) localhost:8080/api/author/1
 	
 	@GetMapping("/author/{id}")
-	public ResponseEntity<AuthorDto> getAuthor(@PathVariable Long id){
-		AuthorDto author = authorService.getAuthor(id);
+	public ResponseEntity<Author> getAuthor(@PathVariable Long id){
+		Author author = authorService.getAuthor(id);
 		if (author == null) {
 	        return ResponseEntity.noContent().build();
 	    } else {
@@ -67,8 +54,8 @@ public class ApiController {
 	//example : (GET) localhost:8080/api/book/6
 	
 	@GetMapping("/book/{id}")
-	public ResponseEntity<BookDto> getBook(@PathVariable Long id) {
-	    BookDto book = bookService.getBook(id);
+	public ResponseEntity<Book> getBook(@PathVariable Long id) {
+	    Book book = bookService.getBook(id);
 	    
 	    if (book == null) {
 	        return ResponseEntity.noContent().build();
@@ -78,7 +65,7 @@ public class ApiController {
 	}
 	
 	@PostMapping("/author")
-	public ResponseEntity postAuthor(@RequestBody AuthorDto authorDto){
+	public ResponseEntity postAuthor(@RequestBody Author author){
 		//post edilecek json verisi aşağıdalar gibi olabilmeli
 //		{
 //		    "name": "Erich Gamma",
@@ -89,7 +76,7 @@ public class ApiController {
 //	    "name": "Erich Gamma",
 //	    "books": [//burada book nesneleri]
 //	}
-		Author savedAuthor = authorService.createAuthor(authorDto);
+		Author savedAuthor = authorService.createAuthor(author);
 		
 		if(savedAuthor == null) {
 			return ResponseEntity.badRequest().build();

@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import me.erano.com.dto.BookDto;
 import me.erano.com.model.Book;
 import me.erano.com.repository.BookRepository;
 
@@ -44,31 +43,13 @@ public class BookServiceImpl implements BookService{
 	
 
 	@Override
-	public BookDto getBook(Long id) {
-		Book expected = bookRepository.getReferenceById(id);
-		BookDto bookDto = new BookDto(
-				expected.getId(),
-				expected.getName(),
-				expected.getAuthor().getId()
-			);
-		
-		return bookDto;
+	public Book getBook(Long id) {
+		return bookRepository.getReferenceById(id);
 	}
 
 	@Override
-	public List<BookDto> getAllBooks() {
-		List<Book> books = bookRepository.findAll();
-	    List<BookDto> bookDTOs = new ArrayList<>();
-
-	    for (Book book : books) {
-	        BookDto bookDTO = new BookDto();
-	        bookDTO.setId(book.getId());
-	        bookDTO.setName(book.getName());
-	        bookDTO.setAuthorId(book.getAuthor().getId());
-	        bookDTOs.add(bookDTO);
-	    }
-
-	    return bookDTOs;
+	public List<Book> getAllBooks() {
+	    return bookRepository.findAll();
 	}
 
 	

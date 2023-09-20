@@ -3,7 +3,11 @@ package me.erano.com.model;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -21,9 +25,10 @@ public class Author {
 	
 	private String name;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonManagedReference //If we want to add book objects in addition to the author json data.
+	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true) // hibernate object relation mapping annotation
 	private List<Book> books;
+	
 	
 	public Author() {
 		
